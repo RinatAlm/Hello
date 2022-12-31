@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "876605199828",
+    "project_id": "hello-new-world-9ff47",
+    "storage_bucket": "hello-new-world-9ff47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876605199828:android:bedbea922bc6d929d63241",
+        "android_client_info": {
+          "package_name": "com.ZerostaR.Hello"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876605199828-ii9b9jkd7q89nv81mvvvfqj9okm9j4s2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxIe66EEMKG6f30GgmXOEf6LV5vx3SUrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876605199828-ii9b9jkd7q89nv81mvvvfqj9okm9j4s2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
