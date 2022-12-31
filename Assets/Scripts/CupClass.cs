@@ -21,7 +21,7 @@ public class CupClass : MonoBehaviour
                 GameManager.setToDefault = false;//we changed smth
                 GameManager.isSwitching = false;
                 GameManager.time = FindObjectOfType<GameManager>().timeToMove;//Setting time to default time              
-               
+                
             }
           
         }
