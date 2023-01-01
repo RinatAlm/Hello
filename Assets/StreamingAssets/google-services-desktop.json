@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "876605199828",
-    "firebase_url": "https://hello-new-world-9ff47-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "hello-new-world-9ff47",
-    "storage_bucket": "hello-new-world-9ff47.appspot.com"
+    "project_number": "346342460435",
+    "firebase_url": "https://helloworld-e532b-default-rtdb.firebaseio.com",
+    "project_id": "helloworld-e532b",
+    "storage_bucket": "helloworld-e532b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:876605199828:android:ca96b4b68adda328d63241",
+        "mobilesdk_app_id": "1:346342460435:android:a84946ea0a5d366a1083e6",
         "android_client_info": {
           "package_name": "com.ZerostaR.Hello"
         }
       },
       "oauth_client": [
         {
-          "client_id": "876605199828-ii9b9jkd7q89nv81mvvvfqj9okm9j4s2.apps.googleusercontent.com",
+          "client_id": "346342460435-757sq0gfffv3v4idspfs9tn04thk4gvl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBxIe66EEMKG6f30GgmXOEf6LV5vx3SUrQ"
+          "current_key": "AIzaSyDvpauPH6xI2gE3QlUjVl0BHLo3LTljx2Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "876605199828-ii9b9jkd7q89nv81mvvvfqj9okm9j4s2.apps.googleusercontent.com",
+              "client_id": "346342460435-757sq0gfffv3v4idspfs9tn04thk4gvl.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,15 +1,13 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
-using Firebase;
 using Firebase.RemoteConfig;
-using System.Threading;
 using System.Threading.Tasks;
-using Firebase.Database;
 using Firebase.Extensions; // for ContinueWithOnMainThread
 using System.IO;
+using System;
 using UnityEngine;
 #if UNITY_EDITOR
-using UnityEditor;
+using UnityEditor;//for exit
 #endif
 
 public class ConnectorManager : MonoBehaviour
@@ -24,52 +22,50 @@ public class ConnectorManager : MonoBehaviour
         public string url;
     }
 
-    public void SaveURL() //------------ Transfering data into Json Format
-    {
-        Link data = new Link();
-        data.url = url;
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + "/saveurlfile.json", json); //--------------------------------------- To use files   using System.IO;
-    }
+    //public void SaveURL() //------------ Transfering data into Json Format
+    //{
+    //    Link data = new Link();
+    //    data.url = url;
+    //    string json = JsonUtility.ToJson(data);
+    //    File.WriteAllText(Application.persistentDataPath + "/saveurlfile.json", json); //--------------------------------------- To use files   using System.IO;
+    //}
 
-    public void LoadURL() //------------- Transfering data from Json Format
-    {
-        string path = Application.persistentDataPath + "/saveurlfile.json";
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            Link data = JsonUtility.FromJson<Link>(json);
-            url = data.url;
-        }
-    }
-
-
-    void Awake()
-    {
-
-    }
+    //public void LoadURL() //------------- Transfering data from Json Format
+    //{
+    //    string path = Application.persistentDataPath + "/saveurlfile.json";
+    //    if (File.Exists(path))
+    //    {
+    //        string json = File.ReadAllText(path);
+    //        Link data = JsonUtility.FromJson<Link>(json);
+    //        url = data.url;
+    //    }
+    //}
 
     private void Start()
     {
-       
 
-        LoadURL();//Load link
-        if (url == "")//link is empty
-        {
-            try
-            {
-                FetchDataAsync();
-            }
-            catch(FirebaseException e)
-            {
-                Debug.LogError(e.Message);
-            }       
-            CheckLink();
-        }
-        else
-        {
-            CheckInetConnection();
-        }
+
+        // LoadURL();//Load link
+       
+        FetchDataAsync();        
+       
+        //if (url == "")//link is empty
+        //{
+        //    try
+        //    {
+        //        FetchDataAsync();
+        //        OpenVebViewWithLink();
+        //    }
+        //    catch(FirebaseException e)
+        //    {
+        //        Debug.LogError(e.Message);
+        //    }       
+        //   // CheckLink();
+        //}
+        //else
+        //{
+        //    CheckInetConnection();
+        //}
 
 
 
@@ -77,18 +73,24 @@ public class ConnectorManager : MonoBehaviour
 
     void takeData(FirebaseRemoteConfig remoteConfig)
     {
+       
+        Debug.LogWarning(url);
         url = remoteConfig.GetValue(firebasePath).StringValue;//assigning data to url
+        Debug.Log(remoteConfig.GetValue(firebasePath).StringValue);
+        
     }
     public Task FetchDataAsync()//preparing data
     {
+        
         Debug.Log("Fetching data...");
         System.Threading.Tasks.Task fetchTask =
-        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.FetchAsync();
+        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
         return fetchTask.ContinueWithOnMainThread(FetchComplete);
     }
 
     private void FetchComplete(Task fetchTask)
     {
+        Debug.LogWarning(FirebaseRemoteConfig.DefaultInstance.ConfigSettings);
         if (!fetchTask.IsCompleted)
         {
             Debug.LogError("Retrieval hasn't finished.");
@@ -105,9 +107,20 @@ public class ConnectorManager : MonoBehaviour
         remoteConfig.ActivateAsync().ContinueWithOnMainThread(task => {//Activating data
                 Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
             takeData(remoteConfig);
-            });
+            OpenVebViewWithLink();
+        });
     }
+    void SetDefaultData()
+    {
+        System.Collections.Generic.Dictionary<string, object> defaults =
+  new System.Collections.Generic.Dictionary<string, object>();
 
+        // These are the values that are used if we haven't fetched data from the
+        // server
+        // yet, or if we ask for values that the server doesn't have:
+        defaults.Add("url", "");
+        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults);
+    }
 
     public void CheckInetConnection()
     {
@@ -138,7 +151,7 @@ public class ConnectorManager : MonoBehaviour
         }
         else
         {
-            SaveURL();//Saving url
+            
             OpenVebViewWithLink();//Open web view link 
         }
     }
