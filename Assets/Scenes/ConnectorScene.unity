@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1835945a743f84dac85757b5507b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firebasePath: url
   url: 
 --- !u!4 &1735294954
 Transform:
