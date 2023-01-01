@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "876605199828",
+    "firebase_url": "https://hello-new-world-9ff47-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "hello-new-world-9ff47",
     "storage_bucket": "hello-new-world-9ff47.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:876605199828:android:bedbea922bc6d929d63241",
+        "mobilesdk_app_id": "1:876605199828:android:ca96b4b68adda328d63241",
         "android_client_info": {
           "package_name": "com.ZerostaR.Hello"
         }
