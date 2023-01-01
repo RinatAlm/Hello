@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine.SceneManagement;
 using Firebase;
 using Firebase.RemoteConfig;
 using System.Threading;
@@ -7,11 +8,16 @@ using Firebase.Database;
 using Firebase.Extensions; // for ContinueWithOnMainThread
 using System.IO;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ConnectorManager : MonoBehaviour
 {
     public string firebasePath = "url";
     public string url;
+    public string sceneName = "SampleScene";
+    public GameObject errorPanel;
 
     public struct Link
     {
@@ -48,21 +54,30 @@ public class ConnectorManager : MonoBehaviour
        
 
         LoadURL();//Load link
-        FetchDataAsync();
-       
-        //if (url == null)//link is empty
-        //{
-        //    getLink();
-        //    OpenVebViewWithLink();
+        if (url == "")//link is empty
+        {
+            try
+            {
+                FetchDataAsync();
+            }
+            catch(FirebaseException e)
+            {
+                Debug.LogError(e.Message);
+            }       
+            CheckLink();
+        }
+        else
+        {
+            CheckInetConnection();
+        }
 
-        //}
-        //else
-        //{
-        //    CheckInetConnection();
-        //}
 
 
+    }
 
+    void takeData(FirebaseRemoteConfig remoteConfig)
+    {
+        url = remoteConfig.GetValue(firebasePath).StringValue;//assigning data to url
     }
     public Task FetchDataAsync()//preparing data
     {
@@ -79,19 +94,17 @@ public class ConnectorManager : MonoBehaviour
             Debug.LogError("Retrieval hasn't finished.");
             return;
         }
-
-        var remoteConfig = FirebaseRemoteConfig.DefaultInstance;
+        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.DefaultInstance;
         var info = remoteConfig.Info;
         if (info.LastFetchStatus != LastFetchStatus.Success)
         {
             Debug.LogError($"{nameof(FetchComplete)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
             return;
         }
-
         // Fetch successful. Parameter values must be activated to use.
         remoteConfig.ActivateAsync().ContinueWithOnMainThread(task => {//Activating data
                 Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
-                url = remoteConfig.GetValue("url").StringValue;//assignening data url
+            takeData(remoteConfig);
             });
     }
 
@@ -101,22 +114,32 @@ public class ConnectorManager : MonoBehaviour
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             Debug.Log("Error. Check internet connection!");
+            errorPanel.SetActive(true);
         }
         else
         {
             OpenVebViewWithLink();
         }
     }
+    public void Exit()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
+    }
 
     public void CheckLink()
     {
-        if(url == null || IsEmulator() || GetSIMState())
+        if(url == "" || IsEmulator() || GetSIMState())
         {
-
+            SceneManager.LoadScene(sceneName);
         }
         else
         {
-            OpenVebViewWithLink();
+            SaveURL();//Saving url
+            OpenVebViewWithLink();//Open web view link 
         }
     }
 
